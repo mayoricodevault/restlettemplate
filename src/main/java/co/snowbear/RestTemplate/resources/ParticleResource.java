@@ -1,7 +1,7 @@
-package com.jhc.figleaf.JobsRestApp.resources;
+package co.snowbear.RestTemplate.resources;
 
-import com.jhc.figleaf.JobsRestApp.models.Particle;
-import com.jhc.figleaf.JobsRestApp.models.Particles;
+import co.snowbear.RestTemplate.models.Particle;
+import co.snowbear.RestTemplate.models.Particles;
 import com.wordnik.swagger.annotations.*;
 
 import javax.ws.rs.*;

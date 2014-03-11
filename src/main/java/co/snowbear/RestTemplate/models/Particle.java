@@ -1,21 +1,21 @@
-package com.jhc.figleaf.JobsRestApp.models;
+package co.snowbear.RestTemplate.models;
 
 /**
  * Created by hamish dickson on 09/03/2014.
  *
  * Bean for particle
  */
-public class Job {
+public class Particle {
     private String name;
     private String another;
     // in keV
     private int mass;
 
-    public Job() {
+    public Particle() {
     }
 
 
-    public Job(String name, String another, int mass) {
+    public Particle(String name, String another, int mass) {
         this.name = name;
         this.another = another;
         this.mass = mass;
@@ -59,7 +59,7 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Job particle = (Job) o;
+        Particle particle = (Particle) o;
 
         return !(name != null ? !name.equals(particle.name) : particle.name != null);
 

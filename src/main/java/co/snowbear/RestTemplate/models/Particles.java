@@ -1,7 +1,6 @@
-package com.jhc.figleaf.JobsRestApp.models;
+package co.snowbear.RestTemplate.models;
 
 import com.google.gson.Gson;
-import com.jhc.figleaf.JobsRestApp.models.Particle;
 
 import java.util.ArrayList;
 import java.util.List;
