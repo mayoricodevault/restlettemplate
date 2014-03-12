@@ -1,5 +1,6 @@
 package com.jhc.figleaf.JobsRestApp.resources;
 
+import com.google.gson.Gson;
 import com.jhc.figleaf.JobsRestApp.database.RealTracey;
 import com.jhc.figleaf.JobsRestApp.models.Job;
 import com.jhc.figleaf.JobsRestApp.models.Jobs;
@@ -9,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by hamish dickson on 08/03/2014.
@@ -61,17 +63,53 @@ public class JobsResource {
             responseContainer = "JSON"
     )
     public Response getJobFromTracey(@ApiParam(value = "Job number", required = true) @PathParam("jobNumber") int jobNumber) {
-        /*if (Jobs.isInKnownJob(jobNumber)) {*/
         try {
-            Job job = RealTracey.getJob(212411);
+            Job job = RealTracey.getJob(jobNumber);
 
-            return Response.ok().entity("ok").build();
+            return Response.ok().entity(new Gson().toJson(job)).build();
         } catch (SQLException e) {
             // meh
         }
-
         return Response.status(Response.Status.NO_CONTENT).build();
     }
+
+    @GET
+    @Path("/user/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Find details of a specific job",
+            notes = "You know when things go further away from you they look smaller? " +
+                    ".... well eventually they get big again (fact of the day)",
+            response = Response.class,
+            responseContainer = "JSON"
+    )
+    public Response getJobsForUser(@ApiParam(value = "User Id", required = true) @PathParam("userId") String userId) {
+        try {
+            List<Job> jobs = RealTracey.getJobsForUser(userId);
+
+            return Response.ok().entity(new Gson().toJson(jobs)).build();
+        } catch (SQLException e) {
+            // meh
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    /**
+     * Use POST to create new entities
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = { @ApiResponse(code = 405, message = "Invalid input") })
+    @ApiOperation(
+            value = "Add a new job to the system",
+            notes = "This should have a level of authorization added to it"
+    )
+    public Response addJob(@ApiParam(value = "Create a new job", required = true) Job job) {
+        Jobs.addJob(job);
+
+        // I'm going to return the whole lot just to be nice :)
+        return Response.ok().entity(Jobs.toJsonString()).build();
+    }*/
 
     /**
      * Use POST to create new entities
