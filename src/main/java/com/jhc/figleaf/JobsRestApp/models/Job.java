@@ -6,52 +6,49 @@ package com.jhc.figleaf.JobsRestApp.models;
  * Bean for particle
  */
 public class Job {
-    private String name;
-    private String another;
-    // in keV
-    private int mass;
+    private int jobNumber;
+    private String description;
+    private String whoDo;
+    private String status;
 
-    public Job() {
+
+    public Job(int jobNumber, String description, String whoDo, String status) {
+        this.jobNumber = jobNumber;
+        this.description = description;
+        this.whoDo = whoDo;
+        this.status = status;
     }
 
-
-    public Job(String name, String another, int mass) {
-        this.name = name;
-        this.another = another;
-        this.mass = mass;
+    public int getJobNumber() {
+        return jobNumber;
     }
 
-    public String getName() {
-        return name;
+    public void setJobNumber(int jobNumber) {
+        this.jobNumber = jobNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDescription() {
+        return description;
     }
 
-    public String getAnother() {
-        return another;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setAnother(String another) {
-        this.another = another;
+    public String getWhoDo() {
+        return whoDo;
     }
 
-    public int getMass() {
-        return mass;
+    public void setWhoDo(String whoDo) {
+        this.whoDo = whoDo;
     }
 
-    public void setMass(int mass) {
-        this.mass = mass;
+    public String getStatus() {
+        return status;
     }
 
-    @Override
-    public String toString() {
-        return "Particle{" +
-                "name='" + name + '\'' +
-                ", another='" + another + '\'' +
-                ", mass=" + mass +
-                '}';
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -59,14 +56,24 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Job particle = (Job) o;
+        Job job = (Job) o;
 
-        return !(name != null ? !name.equals(particle.name) : particle.name != null);
+        return jobNumber == job.jobNumber;
 
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return jobNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "jobNumber=" + jobNumber +
+                ", description='" + description + '\'' +
+                ", whoDo='" + whoDo + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

@@ -14,19 +14,18 @@ public class Jobs {
     private static List<Job> jobList = new ArrayList<Job>();
 
     static {
-        // just a few leptons for now
-        jobList.add(new Job("electron", "one", 500));
-        jobList.add(new Job("positron", "two", 500));
-        jobList.add(new Job("muon", "three", 105700));
+        jobList.add(new Job(1, "this is a test job", "me do", "A"));
+        jobList.add(new Job(2, "this is a test job 2", "someone else", "A"));
+        jobList.add(new Job(3, "this is a test job 3", "erm bob can do this one", "A"));
     }
 
     public static void addJob(Job job) {
         jobList.add(job);
     }
 
-    public static boolean deleteJob(String name) {
+    public static boolean deleteJob(int jobNumber) {
         for (Job job : jobList) {
-            if (job.getName().equals(name)) {
+            if (job.getJobNumber() == jobNumber) {
                 jobList.remove(job);
                 return true;
             }
@@ -42,22 +41,22 @@ public class Jobs {
         }
     }
 
-    public static String getJobJson(String name) {
+    public static String getJobJson(int jobNumber) {
         for (Job job : jobList) {
-            if (job.getName().equals(name)) {
+            if (job.getJobNumber() == jobNumber) {
                 return new Gson().toJson(job);
             }
         }
-        return new Gson().toJson(new Job("not", "found", 0));
+        return new Gson().toJson(new Job(0, "error: job not found", "noone", "A"));
     }
 
     public static String toJsonString() {
         return new Gson().toJson(jobList);
     }
 
-    public static boolean isInKnownJob(String name) {
+    public static boolean isInKnownJob(int jobNumber) {
         for(Job job : jobList) {
-            if (job.getName().equals(name)) {
+            if (job.getJobNumber() == jobNumber) {
                 return true;
             }
         }

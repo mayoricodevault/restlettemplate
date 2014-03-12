@@ -1,5 +1,6 @@
 package com.jhc.figleaf.JobsRestApp.resources;
 
+import com.jhc.figleaf.JobsRestApp.database.RealTracey;
 import com.jhc.figleaf.JobsRestApp.models.Job;
 import com.jhc.figleaf.JobsRestApp.models.Jobs;
 import com.wordnik.swagger.annotations.*;
@@ -7,6 +8,7 @@ import com.wordnik.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 
 /**
  * Created by hamish dickson on 08/03/2014.
@@ -40,9 +42,32 @@ public class JobsResource {
             response = Response.class,
             responseContainer = "JSON"
     )
-    public Response getJob(@ApiParam(value = "Job number", required = true) @PathParam("jobNumber") String jobNumber) {
+    public Response getJob(@ApiParam(value = "Job number", required = true) @PathParam("jobNumber") int jobNumber) {
         if (Jobs.isInKnownJob(jobNumber)) {
             return Response.ok().entity(Jobs.getJobJson(jobNumber)).build();
+        }
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @GET
+    @Path("/tracey/{jobNumber}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Find details of a specific job",
+            notes = "You know when things go further away from you they look smaller? " +
+                    ".... well eventually they get big again (fact of the day)",
+            response = Response.class,
+            responseContainer = "JSON"
+    )
+    public Response getJobFromTracey(@ApiParam(value = "Job number", required = true) @PathParam("jobNumber") int jobNumber) {
+        /*if (Jobs.isInKnownJob(jobNumber)) {*/
+        try {
+            Job job = RealTracey.getJob(212411);
+
+            return Response.ok().entity("ok").build();
+        } catch (SQLException e) {
+            // meh
         }
 
         return Response.status(Response.Status.NO_CONTENT).build();
@@ -97,7 +122,7 @@ public class JobsResource {
             }
     )
     public Response deleteJob(
-            @ApiParam(value = "Job number to be deleted", required = true) @PathParam("jobNumber") String jobNumber) {
+            @ApiParam(value = "Job number to be deleted", required = true) @PathParam("jobNumber") int jobNumber) {
         if (Jobs.deleteJob(jobNumber)) {
             return Response.ok().entity(Jobs.toJsonString()).build();
         } else {
