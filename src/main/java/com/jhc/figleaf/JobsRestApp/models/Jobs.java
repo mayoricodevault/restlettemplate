@@ -14,9 +14,9 @@ public class Jobs {
     private static List<Job> jobList = new ArrayList<Job>();
 
     static {
-        jobList.add(new Job(1, "this is a test job", "me do", "A"));
-        jobList.add(new Job(2, "this is a test job 2", "someone else", "A"));
-        jobList.add(new Job(3, "this is a test job 3", "erm bob can do this one", "A"));
+        jobList.add(new Job(1, "this is a test job", "me do", "A", "bob", 1, "something", "string", 1, "another"));
+        jobList.add(new Job(2, "this is a test job", "me do", "A", "bob", 1, "something", "string", 1, "another"));
+        jobList.add(new Job(3, "this is a test job", "me do", "A", "bob", 1, "something", "string", 1, "another"));
     }
 
     public static void addJob(Job job) {
@@ -47,7 +47,7 @@ public class Jobs {
                 return new Gson().toJson(job);
             }
         }
-        return new Gson().toJson(new Job(0, "error: job not found", "noone", "A"));
+        return new Gson().toJson(new Job(0, "this is a test job", "me do", "A", "bob", 1, "something", "string", 1, "another"));
     }
 
     public static String toJsonString() {

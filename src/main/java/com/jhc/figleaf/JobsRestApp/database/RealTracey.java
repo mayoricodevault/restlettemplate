@@ -1,9 +1,10 @@
 package com.jhc.figleaf.JobsRestApp.database;
 
-import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.*;
 import com.jhc.figleaf.JobsRestApp.models.Job;
 import org.apache.commons.dbcp.BasicDataSource;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RealTracey {
 
     private static final String DB_DRIVER = "com.ibm.as400.access.AS400JDBCDriver";
+    //private static final String DB_CONNECTION = "jdbc:as400://tracey.servers.jhc.co.uk;naming=system;prompt=false";
     private static final String DB_CONNECTION = "jdbc:as400://tracey.servers.jhc.co.uk;naming=system;prompt=false";
     private static final String DB_USER = "HDDEV";
     private static final String DB_PASSWORD = "HDDEV";
@@ -30,7 +32,7 @@ public class RealTracey {
         dataSource.setDriverClassName("com.ibm.as400.access.AS400JDBCDriver");
         dataSource.setMaxActive(Integer.valueOf(5).intValue());
         dataSource.setMaxIdle(Integer.valueOf(2).intValue());
-        dataSource.setValidationQuery("SELECT * FROM F63HOLDDTA/CLIENT WHERE CLINO = '0000001'");
+        dataSource.setValidationQuery("SELECT * FROM JHCJUTIL/JOBS3 WHERE CODEX = 171524");
         dataSource.setTestOnBorrow(true);
         dataSource.setUsername(DB_USER);
         dataSource.setPassword(DB_PASSWORD);
@@ -44,13 +46,13 @@ public class RealTracey {
         try {
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            String selectSQL = "SELECT CODEX, DESCRQ, WHODO, STATUS FROM JOBS3 WHERE CODEX = " + jobNumber + " FETCH FIRST 1 ROWS ONLY";
+            String selectSQL = "SELECT CODEX, DESCRQ, WHODO, STATUS, CLIENT, IMPORT, WHOPAY, CONTAC, BCODEX, JTYPE FROM JOBS3 WHERE CODEX = " + jobNumber + " FETCH FIRST 1 ROWS ONLY";
             ResultSet resultSet = statement.executeQuery(selectSQL);
 
             Job job = null;
 
             while (resultSet.next()) {
-                job = new Job(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+                job = new Job(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9), resultSet.getString(10));
             }
 
             statement.close();
@@ -58,7 +60,7 @@ public class RealTracey {
 
             return job;
         } catch (SQLException e) {
-            return new Job(jobNumber, "test", "test 2", "test 3");
+            return new Job(jobNumber, "test", "test 2", "test 3", "test 4", 5, "test 6", "test 7", 8, "test 9");
         }
 
 
@@ -134,13 +136,13 @@ public class RealTracey {
         try {
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            String selectSQL = "SELECT CODEX, DESCRQ, WHODO, STATUS FROM JOBS3 WHERE WHODO = '" + user + "'" ;//+ jobNumber + " FETCH FIRST 1 ROWS ONLY";
+            String selectSQL = "SELECT CODEX, DESCRQ, WHODO, STATUS, CLIENT, IMPORT, WHOPAY, CONTAC, BCODEX, JTYPE FROM JOBS3 WHERE WHODO = '" + user + "'" ;
             ResultSet resultSet = statement.executeQuery(selectSQL);
 
             List<Job> jobs = new ArrayList<Job>();
 
             while (resultSet.next()) {
-                jobs.add(new Job(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)));
+                jobs.add(new Job(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9), resultSet.getString(10)));
             }
 
             statement.close();
@@ -187,6 +189,59 @@ public class RealTracey {
         return jobs;*/
     }
 
+    /**
+     * This returns a job and a work order
+     *
+     * @param
+     * @return
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws SQLException
+     * @throws IllegalObjectTypeException
+     * @throws ObjectDoesNotExistException
+     * @throws ErrorCompletingRequestException
+     * @throws AS400SecurityException
+     */
+    /*private static List<Job> addJob(Job job) throws InterruptedException, IOException, SQLException, IllegalObjectTypeException, ObjectDoesNotExistException, ErrorCompletingRequestException, AS400SecurityException {
+
+        // first get the job number
+        job.setJobNumber(getNextJobNumber());
+
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            String insertSQL = "INSERT INTO JOBS3 "
+                    + "(CODEX, STATUS, CLIENT, IMPORT, DESCRQ, WHODO, WHOPAY, CONTAC, BCODEX, JTYPE) VALUES"
+                    + "(" + job.getJobNumber() + ", '" + job.getStatus() + "', 'JHC', 9, 'this is a test', 'HD', 'JHC', 'HAMISH', 0, 'J')";
+            ResultSet resultSet = statement.executeQuery(insertSQL);
+
+            List<Job> jobs = new ArrayList<Job>();
+
+            while (resultSet.next()) {
+                jobs.add(new Job(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9), resultSet.getString(10)));
+            }
+
+            statement.close();
+            resultSet.close();
+
+            return jobs;
+        } catch (SQLException e) {
+            return null;
+        }
+    }*/
+
+    /*private static int getNextJobNumber() throws SQLException, InterruptedException, IOException, IllegalObjectTypeException, ObjectDoesNotExistException, ErrorCompletingRequestException, AS400SecurityException {
+        AS400 system = new AS400("My400");
+        QSYSObjectPathName path = new QSYSObjectPathName("MYLIB", "MYDATA", "DTAARA");
+        DecimalDataArea dataArea = new DecimalDataArea(system, path.getPath());
+
+        BigDecimal jobNumber = dataArea.read();
+
+        dataArea.write(jobNumber.add(new BigDecimal(1)));
+
+        return jobNumber.intValueExact();
+    }*/
+
     private static Connection getDBConnection() {
 
         Connection dbConnection = null;
@@ -214,6 +269,5 @@ public class RealTracey {
         }
 
         return dbConnection;
-
     }
 }
