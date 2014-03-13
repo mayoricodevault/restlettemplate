@@ -97,7 +97,7 @@ public class RealTracey {
     /**
      * This returns a job and a work order
      */
-    public static void addJob(Job job) throws InterruptedException, IOException, SQLException, IllegalObjectTypeException, ObjectDoesNotExistException, ErrorCompletingRequestException, AS400SecurityException {
+    public static Job addJob(Job job) throws InterruptedException, IOException, SQLException, IllegalObjectTypeException, ObjectDoesNotExistException, ErrorCompletingRequestException, AS400SecurityException {
 
         // first get the job number
         job.setJobNumber(getNextJobNumber());
@@ -135,6 +135,7 @@ public class RealTracey {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
+            return job;
         }
     }
 
