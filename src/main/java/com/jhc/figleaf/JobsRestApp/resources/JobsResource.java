@@ -1,6 +1,10 @@
 package com.jhc.figleaf.JobsRestApp.resources;
 
 import com.google.gson.Gson;
+import com.ibm.as400.access.AS400SecurityException;
+import com.ibm.as400.access.ErrorCompletingRequestException;
+import com.ibm.as400.access.IllegalObjectTypeException;
+import com.ibm.as400.access.ObjectDoesNotExistException;
 import com.jhc.figleaf.JobsRestApp.database.RealTracey;
 import com.jhc.figleaf.JobsRestApp.models.Job;
 import com.jhc.figleaf.JobsRestApp.models.Jobs;
@@ -9,6 +13,7 @@ import com.wordnik.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -116,17 +121,33 @@ public class JobsResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 405, message = "Invalid input") })
     @ApiOperation(
             value = "Add a new job to the system",
             notes = "This should have a level of authorization added to it"
     )
     public Response addJob(@ApiParam(value = "Create a new job", required = true) Job job) {
-        Jobs.addJob(job);
+        //Jobs.addJob(job);
+        try {
+            RealTracey.addJob(job);
+            return Response.ok().build();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalObjectTypeException e) {
+            e.printStackTrace();
+        } catch (ObjectDoesNotExistException e) {
+            e.printStackTrace();
+        } catch (ErrorCompletingRequestException e) {
+            e.printStackTrace();
+        } catch (AS400SecurityException e) {
+            e.printStackTrace();
+        }
 
-        // I'm going to return the whole lot just to be nice :)
-        return Response.ok().entity(Jobs.toJsonString()).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 
     /**

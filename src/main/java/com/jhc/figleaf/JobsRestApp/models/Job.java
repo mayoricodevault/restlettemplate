@@ -30,6 +30,10 @@ public class Job {
         this.jobType = jobType;
     }
 
+    public Job() {
+
+    }
+
     public String getClient() {
         return client;
     }
