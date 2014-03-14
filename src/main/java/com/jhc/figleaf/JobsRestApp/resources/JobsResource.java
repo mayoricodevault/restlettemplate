@@ -62,7 +62,7 @@ public class JobsResource {
 
             return Response.ok().entity(new Gson().toJson(jobs)).build();
         } catch (SQLException e) {
-            // meh
+            // meh ...
         }
         return Response.status(Response.Status.NO_CONTENT).build();
     }
@@ -79,7 +79,6 @@ public class JobsResource {
             notes = "This should have a level of authorization added to it"
     )
     public Response addJob(@ApiParam(value = "Create a new job", required = true) Job job) {
-        //Jobs.addJob(job);
         Job outJob = null;
         try {
             outJob = RealTracey.addJob(job);

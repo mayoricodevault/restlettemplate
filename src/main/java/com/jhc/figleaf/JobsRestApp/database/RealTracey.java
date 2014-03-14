@@ -19,10 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RealTracey {
 
     private static final String DB_DRIVER = "com.ibm.as400.access.AS400JDBCDriver";
-    //private static final String DB_CONNECTION = "jdbc:as400://tracey.servers.jhc.co.uk;naming=system;prompt=false";
-    private static final String DB_CONNECTION = "jdbc:as400://tracey.servers.jhc.co.uk;naming=system;prompt=false";
-    private static final String DB_USER = "HDDEV";
-    private static final String DB_PASSWORD = "HDDEV";
+    private static final String DB_CONNECTION = "jdbc:as400://yoursystem;naming=system;prompt=false";
+    private static final String DB_USER = "username";
+    private static final String DB_PASSWORD = "password";
 
     private static final AtomicInteger uniqueInvocationNumber = new AtomicInteger();
     private static final BasicDataSource dataSource = new BasicDataSource();
