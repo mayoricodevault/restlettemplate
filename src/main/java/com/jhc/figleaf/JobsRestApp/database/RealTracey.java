@@ -2,6 +2,7 @@ package com.jhc.figleaf.JobsRestApp.database;
 
 import com.ibm.as400.access.*;
 import com.jhc.figleaf.JobsRestApp.models.Job;
+import com.jhc.figleaf.JobsRestApp.utils.ConfigManager;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.io.IOException;
@@ -14,14 +15,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by hamish dickson on 12/03/2014.
  *
- * Actually go and get the data from Tracey
+ * Go and get the data from tracey
  */
 public class RealTracey {
 
     private static final String DB_DRIVER = "com.ibm.as400.access.AS400JDBCDriver";
-    private static final String DB_CONNECTION = "jdbc:as400://yoursystem;naming=system;prompt=false";
-    private static final String DB_USER = "username";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_CONNECTION = "jdbc:as400://" + ConfigManager.getSetting("server.address") + ";naming=system;prompt=false";
+    private static final String DB_USER = ConfigManager.getSetting("username");
+    private static final String DB_PASSWORD = ConfigManager.getSetting("password");
 
     private static final AtomicInteger uniqueInvocationNumber = new AtomicInteger();
     private static final BasicDataSource dataSource = new BasicDataSource();
@@ -30,14 +31,14 @@ public class RealTracey {
     /**
      * specify the library
      */
-    private static final String LIBRARY = "JHCHJUTIL";
+    private static final String LIBRARY = ConfigManager.getSetting("library");
 
 
     static {
         dataSource.setDriverClassName("com.ibm.as400.access.AS400JDBCDriver");
         dataSource.setMaxActive(Integer.valueOf(5).intValue());
         dataSource.setMaxIdle(Integer.valueOf(2).intValue());
-        dataSource.setValidationQuery("SELECT * FROM JHCHJUTIL/JOBS3 WHERE CODEX = 170395");
+        dataSource.setValidationQuery("SELECT * FROM " + LIBRARY + "/JOBS3 WHERE CODEX = 170395");
         dataSource.setTestOnBorrow(true);
         dataSource.setUsername(DB_USER);
         dataSource.setPassword(DB_PASSWORD);

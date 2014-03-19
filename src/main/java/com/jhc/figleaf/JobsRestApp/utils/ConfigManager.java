@@ -57,7 +57,7 @@ public class ConfigManager {
         if (System.getProperty("os.name").toLowerCase().indexOf( "win" ) == 0) {
             return new File(ConfigManager.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getParentFile().getParentFile().getParentFile().getParentFile().getParent() + "\\restapp.properties";
         } else {
-            return "/opt/jhc/figleaf/resapp.properties";
+            return "/opt/jhc/figleaf/restapp.properties";
         }
     }
 }
