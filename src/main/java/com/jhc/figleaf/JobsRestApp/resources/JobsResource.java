@@ -51,8 +51,7 @@ public class JobsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(
             value = "Find details of a specific job",
-            notes = "You know when things go further away from you they look smaller? " +
-                    ".... well eventually they get big again (fact of the day)",
+            notes = "The americans once nearly destroyed the earth with a bomb called castle bravo",
             response = Response.class,
             responseContainer = "JSON"
     )
@@ -68,7 +67,7 @@ public class JobsResource {
     }
 
     /**
-     * Use POST to create new entities
+     * Use POST to create new jobs
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
