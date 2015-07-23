@@ -29,9 +29,9 @@ public class ServerStatusService extends StatusService {
         dataModel.put("applicationName", Application.getCurrent().getName());
         dataModel.put("statusReasonPhrase", response.getStatus().getReasonPhrase());
         dataModel.put("statusDescription", response.getStatus().getDescription());
-
         Representation thyFtl = new ClientResource(
                 LocalReference.createClapReference(getClass().getPackage()) + "/RestStatus.vtl").get();
+
 
         try {
             representation = new TemplateRepresentation(

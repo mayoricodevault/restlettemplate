@@ -21,12 +21,15 @@ import java.util.logging.Level;
 public class UserListServerResource extends ServerResource implements UsersListResource{
     private UsersPersistence usersPersistence;
 
+
+
     @Override
     protected void doInit() {
         getLogger().finer("Initialization of UserListServerResource");
         usersPersistence = PersistenceService.getUsersPersistence();
         getLogger().finer("Initialization of UserListServerResource ended.");
     }
+
     public UsersListRepresentation getUsers() {
         getLogger().finer("Retrieve the list of Users.");
 
